@@ -1,7 +1,7 @@
 {
     "name": "easylib/easyPDO",
     "type": "library",
-    "version": "v1.1",
+    "version": "v2.0",
     "authors": [
         {
             "name": "Kruemel",
@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-0": {
-            "easylib\\easyPDO\\": ""
+            "Easy\\PDO\\": ""
         }
     }
 }
