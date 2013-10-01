@@ -1,0 +1,19 @@
+{
+    "name": "easylib/easyPDO",
+    "type": "library",
+    "version": "v1.1",
+    "authors": [
+        {
+            "name": "Kruemel",
+            "email": "kruemel@schredder.pw"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "autoload": {
+        "psr-0": {
+            "easylib\\easyPDO\\": ""
+        }
+    }
+}
