@@ -3,9 +3,9 @@ namespace Easy\PDO;
 class PDO
 {
 	private $db;
-	public function __construct($config)
+	public function __construct($config, $group = "DEFAULT")
 	{
-		$this->db = new PDO("mysql:host=".$config->get("host").";dbname=".$config->get("db")."", $config->get("user"), $config->get("pass")); 
+		$this->db = new PDO("mysql:host=".$config->get("host", $group).";dbname=".$config->get("db", $group)."", $config->get("user", $group), $config->get("pass", $group)); 
 		$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		if($utf8)
 		{
