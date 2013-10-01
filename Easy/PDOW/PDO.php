@@ -1,11 +1,12 @@
 <?php
-namespace Easy\PDO;
-class PDO
+namespace Easy\PDOW;
+class PDOW
 {
 	private $db;
 	public function __construct($config, $group = "DEFAULT")
 	{
-		$this->db = new PDO("mysql:host=".$config->get("host", $group).";dbname=".$config->get("db", $group)."", $config->get("user", $group), $config->get("pass", $group)); 
+		#var_dump($config->get("host", "DB"));exit();
+		$this->db = new \PDO("mysql:host=".$config->get("host", $group).";dbname=".$config->get("db", $group)."", $config->get("user", $group), $config->get("pass", $group)); 
 		$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		if($utf8)
 		{
