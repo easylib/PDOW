@@ -43,6 +43,19 @@ class PDOW
 			echo $e;  
 			}  
 	}
+	public function insertID($statment, $data)
+	{
+		try {
+			$STH = $this->db->prepare($statment);
+			$STH->execute($data);
+			$STH->CloseCursor();
+			$id = $this->query("SELECT LAST_INSERT_ID();", array());
+			return $id[0][0];
+		}
+		catch(PDOException $e) {
+			echo "<pre>".$e."</pre>";
+		}
+	}
 	public function query($statment, $data)
 	{
 				try { 
