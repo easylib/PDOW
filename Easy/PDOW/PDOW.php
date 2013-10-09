@@ -71,18 +71,15 @@ class PDOW
 		catch(PDOException $e) {
 			echo $e;  
 			}  
-		//OLD
-		/*
-		$STH = $this->db->query($statment); 
-		$STH->setFetchMode(PDO::FETCH_ASSOC);
-		$re = array();
-		$STH->fetch($data);
-		while($row = $STH->fetch()) {
-			$re[] = $row;   
-		}    
-		return $re;
-		 * 
-		 */
+	}
+	public function fetchOne($statment, $data)
+	{
+		$res = $this->query($statment, $data);
+		if($count($res)==1)
+		{
+			return $res[0];
+		}
+		return false;
 	}
 }
 ?>
