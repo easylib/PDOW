@@ -75,7 +75,7 @@ class PDOW
 	public function fetchOne($statment, $data)
 	{
 		$res = $this->query($statment, $data);
-		if($count($res)==1)
+		if(count($res)==1)
 		{
 			return $res[0];
 		}
