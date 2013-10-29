@@ -81,5 +81,15 @@ class PDOW
 		}
 		return false;
 	}
+	public function fetchOneColum($statment, $data, $colum = 0)
+	{
+		$re = array();
+		$res = $this->query($statment, $data);
+		foreach($res as $r)
+		{
+			$re[] = $r[$colum];
+		}
+		return $re;
+	}
 }
 ?>
