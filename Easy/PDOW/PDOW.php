@@ -3,7 +3,7 @@ namespace Easy\PDOW;
 class PDOW
 {
 	private $db;
-	public function __construct($config, $group = "DEFAULT")
+	public function __construct($config, $group = "DEFAULT", $utf8 = false)
 	{
 		#var_dump($config->get("host", "DB"));exit();
 		$this->db = new \PDO("mysql:host=".$config->get("host", $group).";dbname=".$config->get("db", $group)."", $config->get("user", $group), $config->get("pass", $group)); 
