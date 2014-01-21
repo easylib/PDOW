@@ -67,7 +67,7 @@ class PDOW
 			echo "<pre>".$e."</pre>";
 		}
 	}
-	public function query($statment, $data)
+	public function query($statment, $data = array())
 	{
 				try { 
 		$STH = $this->db->prepare($statment); 
