@@ -102,5 +102,15 @@ class PDOW
 		}
 		return $re;
 	}
+	public function fetchOneEntry($statment, $data, $colum = 0)
+	{
+		$re = false;
+		$res = $this->query($statment, $data);
+		if(isset($res[0][$colum]))
+		{
+			$re = $res[0][$colum];
+		}
+		return $re;
+	}
 }
 ?>
