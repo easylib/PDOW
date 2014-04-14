@@ -1,7 +1,6 @@
 {
     "name": "easylib/pdow",
     "type": "library",
-    "version": "v2.0",
     "authors": [
         {
             "name": "Kruemel",
