@@ -25,6 +25,18 @@ class PDOW
 			$this->db->query("SET NAMES utf8;");
 		}
 	}
+	public function beginTransaction()
+	{
+		return $this->db->beginTransaction();
+	}
+	public function rollBack()
+	{
+		return $this->db->rollBack();
+	}
+	public function commit()
+	{
+		return $this->db->commit();
+	}
 	/*
 	public function dbModel($db = NULL, $utf8 = true)
 	{
@@ -43,7 +55,7 @@ class PDOW
 	   }
 	}
 	*/
-	public function insert($statment, $data)
+	public function insert($statment, $data = array())
 	{
 		try { 
 		$STH = $this->db->prepare($statment); 
@@ -54,7 +66,7 @@ class PDOW
 			echo $e;  
 			}  
 	}
-	public function insertID($statment, $data)
+	public function insertID($statment, $data = array())
 	{
 		try {
 			$STH = $this->db->prepare($statment);
@@ -83,7 +95,7 @@ class PDOW
 			echo $e;  
 			}  
 	}
-	public function fetchOne($statment, $data)
+	public function fetchOne($statment, $data = array())
 	{
 		$res = $this->query($statment, $data);
 		if(count($res)==1)
@@ -92,7 +104,7 @@ class PDOW
 		}
 		return false;
 	}
-	public function fetchOneColum($statment, $data, $colum = 0)
+	public function fetchOneColum($statment, $data = array(), $colum = 0)
 	{
 		$re = array();
 		$res = $this->query($statment, $data);
@@ -102,7 +114,7 @@ class PDOW
 		}
 		return $re;
 	}
-	public function fetchOneEntry($statment, $data, $colum = 0)
+	public function fetchOneEntry($statment, $data = array(), $colum = 0)
 	{
 		$re = false;
 		$res = $this->query($statment, $data);
