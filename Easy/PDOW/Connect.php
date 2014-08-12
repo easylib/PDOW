@@ -22,10 +22,7 @@ class Connect
 	}
 	public function setFile($file)
 	{
-		if($this->typ=="sqlite")
-		{
-			$this->file = $file;
-		}
+		$this->file = $file;
 	}
 	public function setUsername($user)
 	{
@@ -53,6 +50,7 @@ class Connect
 		{
 			$this->db = new \PDO("mysql:host=".$this->server.";dbname=".$this->database."", $this->username, $this->password); 
 		}
+		
 	}
 }
 ?>
