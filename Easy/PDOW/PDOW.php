@@ -1,10 +1,19 @@
 <?php
 namespace Easy\PDOW;
-class PDOW
+class PDOW extends Connect
 {
 	private $db;
+	static private $dbs = NULL;
+	public function __construct()
+	{
+		if(self::$dbs!=NULL)
+		{
+			$this->db = $dbs;
+		}
+	}
 	public function connectConfig($config, $group = "DEFAULT", $utf8 = false)
 	{
+		trigger_error("Deprecated: Function connectConfig() is deprecated.");
 		#var_dump($config->get("host", "DB"));exit();
 		$this->db = new \PDO("mysql:host=".$config->get("host", $group).";dbname=".$config->get("db", $group)."", $config->get("user", $group), $config->get("pass", $group)); 
 		$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -14,8 +23,13 @@ class PDOW
 			$this->db->query("SET NAMES utf8;");
 		}
 	}
+	public function createStatic()
+	{
+		self::$dbs = $db;
+	}
 	public function connect($host, $user, $pw, $db, $utf8 = false)
 	{
+		trigger_error("Deprecated: Function connect() is deprecated");
 		#var_dump($config->get("host", "DB"));exit();
 		$this->db = new \PDO("mysql:host=".$host.";dbname=".$db."", $user, $pw); 
 		$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -37,24 +51,6 @@ class PDOW
 	{
 		return $this->db->commit();
 	}
-	/*
-	public function dbModel($db = NULL, $utf8 = true)
-	{
-		require '../config/mysql.config.php';
-		if($db!=NULL)
-		{
-			$mysql['db']= $db;
-		}
-		//$this->db = new mysqli($mysql["host"], $mysql["user"], $mysql["pass"], $mysql["db"]);
-		$this->db = new PDO("mysql:host=".$mysql['host'].";dbname=".$mysql['db']."", $mysql["user"], $mysql["pass"]); 
-	   $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	   if($utf8)
-	   {
-	   $this->db->query("SET CHARACTER SET utf8;");
-		$this->db->query("SET NAMES utf8;");
-	   }
-	}
-	*/
 	public function insert($statment, $data = array())
 	{
 		try { 
