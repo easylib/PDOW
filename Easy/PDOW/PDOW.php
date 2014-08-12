@@ -8,7 +8,7 @@ class PDOW extends Connect
 	{
 		if(self::$dbs!=NULL)
 		{
-			$this->db = $dbs;
+			$this->db = self::$dbs;
 		}
 	}
 	public function connectConfig($config, $group = "DEFAULT", $utf8 = false)
@@ -25,7 +25,7 @@ class PDOW extends Connect
 	}
 	public function createStatic()
 	{
-		self::$dbs = $db;
+		self::$dbs = $this->db;
 	}
 	public function connect($host, $user, $pw, $db, $utf8 = false)
 	{
