@@ -2,7 +2,7 @@
 namespace Easy\PDOW;
 class PDOW extends Connect
 {
-	private $db;
+	#äprivate $db;
 	static private $dbs = NULL;
 	public function __construct()
 	{

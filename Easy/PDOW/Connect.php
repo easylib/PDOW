@@ -4,11 +4,11 @@ class Connect
 {
 	private $typ = NULL;
 	private $file = NULL;
-	private $db = NULL;
+	protected $db = NULL;
 	private $username = NULL;
 	private $password = NULL;
 	private $server = NULL;
-	private $db = NULL;
+	private $database = NULL;
 	public function setTyp($typ)
 	{
 		if($typ=="mysql")
@@ -37,7 +37,7 @@ class Connect
 	}
 	public function setDatabase($db)
 	{
-		$this->db = $db;
+		$this->database = $db;
 	}
 	public function setPassword($password)
 	{
@@ -51,7 +51,7 @@ class Connect
 		}
 		if($this->typ=="mysql")
 		{
-			$this->db = new \PDO("mysql:host=".$this->server.";dbname=".$this->db."", $this->username, $this->password); 
+			$this->db = new \PDO("mysql:host=".$this->server.";dbname=".$this->database."", $this->username, $this->password); 
 		}
 	}
 }

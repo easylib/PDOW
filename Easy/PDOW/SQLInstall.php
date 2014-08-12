@@ -6,9 +6,9 @@ class SQLInstall extends PDOW
 	public function __construct()
 	{
 		parent::__construct();
-		$this->addLib("\Easy\PDOW\SQLInstall");
+		$this->addLib("Easy\PDOW\SQLInstall");
 	}
-	public function addLib($name);
+	public function addLib($name)
 	{
 		$this->libs[] = $name;
 	}
@@ -17,7 +17,7 @@ class SQLInstall extends PDOW
 		$statusArray = array();
 		foreach($this->libs as $lib)
 		{
-			$installClass = new $lib;
+			$installClass = new $lib();
 			if(!is_object($installClass))
 			{
 				$statusArray[] = array("status"=>False, "name"=>$lib, "reason"=>"No Object");
@@ -34,10 +34,18 @@ class SQLInstall extends PDOW
 			{
 				$this->insert($query);
 			}
-			$this->commit();
-			$this->insertVersion($lib, $version, false);
-
+			$status = $this->commit();
+			if($status)
+			{
+				$this->insertVersion($lib, $version, false);
+				$statusArray[] = array("status"=>True, "name"=>$lib);
+			}
+			else
+			{
+				$statusArray[] = array("status"=>False, "name"=>$lib, "reason"=>"Transaction Faild");
+			}
 		}
+		return $statusArray;
 	}
 	private function insertVersion($name, $version, $checkUpdate = true)
 	{
@@ -68,7 +76,7 @@ class SQLInstall extends PDOW
 		$querys = array();
 		$querys[] = 'CREATE TABLE IF NOT EXISTS `installQuery` (`id` int(255) NOT NULL, `name` varchar(255) NOT NULL, `version` int(255) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;';
 		$querys[] = 'ALTER TABLE `installQuery` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `id` (`id`);';
-		$querys[] = 'ALTER TABLE `installQuery` MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;'
+		$querys[] = 'ALTER TABLE `installQuery` MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;';
 		return array(1, $querys);
 	}
 }
