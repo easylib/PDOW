@@ -70,6 +70,10 @@ class PDOW extends Connect
 			$STH->execute($data);
 			$STH->CloseCursor();
 			$id = $this->query("SELECT LAST_INSERT_ID();", array());
+			if(isset($id[0]["LAST_INSERT_ID()"]))
+			{
+				return $id[0]["LAST_INSERT_ID()"];
+			}
 			return $id[0][0];
 		}
 		catch(PDOException $e) {
