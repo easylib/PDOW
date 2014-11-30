@@ -10,6 +10,7 @@ class PDOW extends Connect
 		{
 			$this->db = self::$dbs;
 		}
+		$this->fetch = \PDO::FETCH_BOTH;
 	}
 	public function connectConfig($config, $group = "DEFAULT", $utf8 = false)
 	{
@@ -75,13 +76,17 @@ class PDOW extends Connect
 			echo "<pre>".$e."</pre>";
 		}
 	}
+	public function setFetch($f)
+	{
+		$this->fetch  = $fetch;
+	}
 	public function query($statment, $data = array())
 	{
 				try { 
 		$STH = $this->db->prepare($statment); 
 		$STH->execute($data);
 		$re = array();
-		while($row = $STH->fetch()) {
+		while($row = $STH->fetch($this->fetch)) {
 			$re[] = $row; 
 		}
 		$STH->CloseCursor();
