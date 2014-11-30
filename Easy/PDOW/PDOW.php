@@ -78,7 +78,7 @@ class PDOW extends Connect
 	}
 	public function setFetch($f)
 	{
-		$this->fetch  = $fetch;
+		$this->fetch  = $f;
 	}
 	public function query($statment, $data = array())
 	{
