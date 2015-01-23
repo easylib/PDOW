@@ -49,6 +49,7 @@ class Connect
 		if($this->typ=="mysql")
 		{
 			$this->db = new \PDO("mysql:host=".$this->server.";dbname=".$this->database."", $this->username, $this->password); 
+			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 		
 	}
