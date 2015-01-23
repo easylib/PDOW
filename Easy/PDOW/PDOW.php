@@ -54,6 +54,10 @@ class PDOW extends Connect
 	}
 	public function insert($statment, $data = array())
 	{
+		if(!is_array($data))
+		{
+			$data = array($data);
+		}
 		try { 
 		$STH = $this->db->prepare($statment); 
 		$STH->execute($data);
@@ -65,6 +69,10 @@ class PDOW extends Connect
 	}
 	public function insertID($statment, $data = array())
 	{
+		if(!is_array($data))
+		{
+			$data = array($data);
+		}
 		try {
 			$STH = $this->db->prepare($statment);
 			$STH->execute($data);
@@ -86,6 +94,10 @@ class PDOW extends Connect
 	}
 	public function query($statment, $data = array())
 	{
+		if(!is_array($data))
+		{
+			$data = array($data);
+		}
 				try { 
 		$STH = $this->db->prepare($statment); 
 		$STH->execute($data);
