@@ -3,6 +3,7 @@ namespace Easy\PDOW\Model;
 
 class Basic
 {
+	protected $db;
 	public function __construct()
 	{
 		$this->db = new \Easy\PDOW\PDOW();

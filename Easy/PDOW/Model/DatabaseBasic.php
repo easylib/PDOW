@@ -4,6 +4,10 @@ namespace Easy\PDOW\Model;
 class DatabaseBasic extends \Easy\PDOW\Model\Basic
 {
 	private $checkStructur = false; //Enabled or Dissabled the structur Check
+	private $name = NULL;
+	private $data = array();
+	private $structurCheck;
+	#private $db;
 	public function __construct($name, $id = NULL)
 	{
 		$this->name = $name;
@@ -34,9 +38,15 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			$name = "get_".$param;
 			return $this->$name();
 		}
-		debug_print_backtrace();
-		var_dump($param);
-		return $this->data[$param];
+		if(isset($this->data[$param]))
+		{
+			return $this->data[$param];
+		}
+		else
+		{
+			throw new \Exception("Param ".$param." not found", 1);
+			
+		}
 	}
 	public function set($param, $value)
 	{
@@ -67,6 +77,15 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			$this->data[$param] = $value;
 		}
 	}
+	public function __set($property, $value)
+	{
+		#var_dump($property, $value);exit();
+		return $this->set($property, $value);
+	}
+	public function __get($property)
+	{
+		return $this->get($property);
+	}
 	public function create()
 	{
 
@@ -74,6 +93,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		{
 			try
 			{
+				#var_dump($this->data);
 				$this->structurCheck->checkObject($this->data);
 				$check = true;
 			}

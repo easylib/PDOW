@@ -73,6 +73,7 @@ class Check extends \Easy\PDOW\Model\Basic
 	}
 	public function checkObject($data)
 	{
+		#var_dump($data);
 		foreach($this->data as $name => $entry)
 		{
 			if(isset($data[$name]))
@@ -83,7 +84,7 @@ class Check extends \Easy\PDOW\Model\Basic
 			{
 				if($entry["Null"]=="NO" && $entry["Default"] ==NULL && $entry["Extra"]!="auto_increment")
 				{
-					var_dump($entry);
+					#var_dump($entry);
 					throw new \Exception("Entry ".$name." is not set", 1);
 				}
 			}
@@ -91,6 +92,7 @@ class Check extends \Easy\PDOW\Model\Basic
 		}
 		if(count($data)>0)
 		{
+			var_dump($data);
 			throw new \Exception("Data set which are not in the Database", 1);
 			
 		}
