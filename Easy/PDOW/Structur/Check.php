@@ -13,7 +13,7 @@ class Check extends \Easy\PDOW\Model\Basic
 	}
 	private function getStuctur($name)
 	{
-		$sql = 'DESCRIBE '.$name;
+		$sql = 'DESCRIBE `'.$name."`;";
 		$res = $this->db->query($sql, array());
 		$re = array();
 		foreach($res as $r)

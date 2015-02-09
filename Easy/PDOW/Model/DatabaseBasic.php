@@ -50,7 +50,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		else
 		{
 			#var_dump($this->data);
-			throw new \Exception("Param ".$param." not found", 1);
+			throw new \Exception("Param ".$param." not found on Database '".$this->_tableName."'", 1);
 		}
 	}
 	public function set($param, $value)
@@ -161,7 +161,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 	}
 	private function getStuctur()
 	{
-		$sql = 'DESCRIBE '.$this->_tableName;
+		$sql = 'DESCRIBE `'.$this->_tableName.'`;';
 		$res = $this->db->query($sql, array());
 		$re = array();
 		foreach($res as $r)
