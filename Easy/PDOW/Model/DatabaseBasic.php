@@ -13,8 +13,6 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 
 	public function __construct($name, $id = NULL)
 	{
-		#echo ">Create ".$name." with id ".$id."\r\n";
-		#$this->name = $name;
 		$this->_tableName = $name;
 		parent::__construct();
 		if($id!=NULL)
@@ -49,7 +47,6 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		}
 		else
 		{
-			#var_dump($this->data);
 			throw new \Exception("Param ".$param." not found on Database '".$this->_tableName."'", 1);
 		}
 	}
