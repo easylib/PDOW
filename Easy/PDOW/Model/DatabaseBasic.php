@@ -3,7 +3,7 @@ namespace Easy\PDOW\Model;
 
 class DatabaseBasic extends \Easy\PDOW\Model\Basic
 {
-	private $checkStructur = true; //Enabled or Dissabled the structur Check
+	private $checkStructur = false; //Enabled or Dissabled the structur Check
 	public function __construct($name, $id = NULL)
 	{
 		$this->name = $name;
@@ -13,6 +13,10 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			$this->getData($name, $id);
 		}
 		$this->structurCheck = new \Easy\PDOW\Structur\Check($name, $this->db);
+	}
+	public function setCheck($check = true)
+	{
+		$this->checkStructur = $check;
 	}
 	private function getData($name, $id)
 	{
