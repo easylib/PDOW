@@ -10,14 +10,18 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		parent::__construct();
 		if($id!=NULL)
 		{
-			$this->checkDB();
-			$res = $this->db->query("SELECT * FROM `".$name."` WHERE `id` = ?", array($id));
-			if(count($res)==1)
-			{
-				$this->data = $res[0];
-			}
+			$this->getData($name, $id);
 		}
 		$this->structurCheck = new \Easy\PDOW\Structur\Check($name, $this->db);
+	}
+	private function getData($name, $id)
+	{
+		$this->checkDB();
+		$res = $this->db->query("SELECT * FROM `".$name."` WHERE `id` = ?", array($id));
+		if(count($res)==1)
+		{
+			$this->data = $res[0];
+		}
 	}
 	public function get($param, $data = false)
 	{
@@ -26,6 +30,8 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			$name = "get_".$param;
 			return $this->$name();
 		}
+		debug_print_backtrace();
+		var_dump($param);
 		return $this->data[$param];
 	}
 	public function set($param, $value)
@@ -46,15 +52,20 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		{
 			$check = true;
 		}
-		if($check == true)
+		if($check == true && isset($this->id))
 		{
 			$this->data[$param] = $value;
 			$sql = 'UPDATE `'.$this->name.'` SET `'.$param.'`=? WHERE id = ?';
 			$res = $this->db->insert($sql, array($value, $this->get("id")));
 		}
+		else
+		{
+			$this->data[$param] = $value;
+		}
 	}
 	public function create()
 	{
+
 		if($this->checkStructur)
 		{
 			try
@@ -64,6 +75,8 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			}
 			catch(\Exception $e)
 			{
+				throw $e;
+				
 				$check = false;
 			}
 		}
@@ -109,12 +122,17 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 				$params[] = $data;
 			}
 			$id = $this->db->insertID($sql, $params);
-			$this->__construct($this->name, $id);
+			$this->getData($this->name, $id);
+		}
+		else
+		{
+			throw new \Exception("Check false", 1);
+			
 		}
 	}
 	private function getStuctur()
 	{
-		$sql = 'DESCRIBE '.$name;
+		$sql = 'DESCRIBE '.$this->name;
 		$res = $this->db->query($sql, array());
 		$re = array();
 		foreach($res as $r)

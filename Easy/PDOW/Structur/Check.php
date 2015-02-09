@@ -18,7 +18,7 @@ class Check extends \Easy\PDOW\Model\Basic
 		$re = array();
 		foreach($res as $r)
 		{
-			$re[$r["Field"]] = array("Type"=>$this->phareseDBTyp($r["Type"]), "Null">$r["Null"], "Key"=>$r["Key"], "Default"=>$r["Default"], "Extra"=>$r["Extra"]);
+			$re[$r["Field"]] = array("Type"=>$this->phareseDBTyp($r["Type"]), "Null"=>$r["Null"], "Key"=>$r["Key"], "Default"=>$r["Default"], "Extra"=>$r["Extra"]);
 
 		}
 		$this->data = $re;
@@ -49,7 +49,8 @@ class Check extends \Easy\PDOW\Model\Basic
 			throw new \Exception("Entry not Found", 1);
 		}
 		$context = $this->data[$name];
-		switch ($this->data[$name]["Typ"]["Typ"]) {
+		#var_dump($this->data[$name]);exit();
+		switch ($this->data[$name]["Type"]["Typ"]) {
 			case 'int':
 				if(!is_numeric($value))
 				{
@@ -61,11 +62,11 @@ class Check extends \Easy\PDOW\Model\Basic
 				# code...
 				break;
 		}
-		if(isset($this->data[$name]["Typ"]["Limit"]))
+		if(isset($this->data[$name]["Type"]["Limit"])&&$this->data[$name]["Type"]["Limit"]!==false)
 		{
-			if(strlen($value) > $this->data[$name]["Typ"]["Limit"])
+			if(strlen($value) > $this->data[$name]["Type"]["Limit"])
 			{
-				throw new \Exception("Value is too long.", 1);
+				throw new \Exception("Value ".$name." is too long.", 1);
 			}
 		}
 		return true;
@@ -80,8 +81,9 @@ class Check extends \Easy\PDOW\Model\Basic
 			}
 			else
 			{
-				if($entry["Null"]==false && $entry["Default"] ==NULL && $entry["Extra"]!="auto_increment")
+				if($entry["Null"]=="NO" && $entry["Default"] ==NULL && $entry["Extra"]!="auto_increment")
 				{
+					var_dump($entry);
 					throw new \Exception("Entry ".$name." is not set", 1);
 				}
 			}
