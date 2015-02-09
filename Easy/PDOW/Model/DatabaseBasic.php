@@ -3,14 +3,19 @@ namespace Easy\PDOW\Model;
 
 class DatabaseBasic extends \Easy\PDOW\Model\Basic
 {
-	private $checkStructur = false; //Enabled or Dissabled the structur Check
-	private $name = NULL;
-	private $data = array();
-	private $structurCheck;
-	#private $db;
+	protected $checkStructur = false; //Enabled or Dissabled the structur Check
+	#protected $name = NULL; //OLD
+	static protected $_tableNameStatic = NULL; //New $name
+	protected $_tableName = NULL; //New $name
+	protected $data = array();
+	protected $structurCheck;
+	static protected $name = NULL;
+
 	public function __construct($name, $id = NULL)
 	{
-		$this->name = $name;
+		#echo ">Create ".$name." with id ".$id."\r\n";
+		#$this->name = $name;
+		$this->_tableName = $name;
 		parent::__construct();
 		if($id!=NULL)
 		{
@@ -44,8 +49,8 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		}
 		else
 		{
+			#var_dump($this->data);
 			throw new \Exception("Param ".$param." not found", 1);
-			
 		}
 	}
 	public function set($param, $value)
@@ -69,7 +74,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		if($check == true && isset($this->id))
 		{
 			$this->data[$param] = $value;
-			$sql = 'UPDATE `'.$this->name.'` SET `'.$param.'`=? WHERE id = ?';
+			$sql = 'UPDATE `'.$this->_tableName.'` SET `'.$param.'`=? WHERE id = ?';
 			$res = $this->db->insert($sql, array($value, $this->get("id")));
 		}
 		else
@@ -79,13 +84,13 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 	}
 	public function __set($property, $value)
 	{
-		#var_dump($property, $value);exit();
 		return $this->set($property, $value);
 	}
 	public function __get($property)
 	{
 		return $this->get($property);
 	}
+
 	public function create()
 	{
 
@@ -111,7 +116,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		if($check)
 		{
 			$structur = $this->getStuctur();
-			$sql = "INSERT INTO `".$this->name."` (";
+			$sql = "INSERT INTO `".$this->_tableName."` (";
 			$first = true;
 			foreach($structur as $name => $entry)
 			{
@@ -146,7 +151,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 				$params[] = $data;
 			}
 			$id = $this->db->insertID($sql, $params);
-			$this->getData($this->name, $id);
+			$this->getData($this->_tableName, $id);
 		}
 		else
 		{
@@ -156,7 +161,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 	}
 	private function getStuctur()
 	{
-		$sql = 'DESCRIBE '.$this->name;
+		$sql = 'DESCRIBE '.$this->_tableName;
 		$res = $this->db->query($sql, array());
 		$re = array();
 		foreach($res as $r)
