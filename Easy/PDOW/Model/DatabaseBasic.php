@@ -114,8 +114,8 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 	}
 	private function getStuctur()
 	{
-		$sql = 'DESCRIBE ?';
-		$res = $this->db->query($sql, array($this->name);
+		$sql = 'DESCRIBE '.$name;
+		$res = $this->db->query($sql, array());
 		$re = array();
 		foreach($res as $r)
 		{

@@ -9,12 +9,12 @@ class Check extends \Easy\PDOW\Model\Basic
 			$this->setDB($db);
 		}
 		$this->checkDB();
-		$this->getStuctur();
+		$this->getStuctur($name);
 	}
 	private function getStuctur($name)
 	{
-		$sql = 'DESCRIBE ?';
-		$res = $this->db->query($sql, array($name));
+		$sql = 'DESCRIBE '.$name;
+		$res = $this->db->query($sql, array());
 		$re = array();
 		foreach($res as $r)
 		{
@@ -37,7 +37,7 @@ class Check extends \Easy\PDOW\Model\Basic
 		}
 		else
 		{
-			return array("Typ"=>$typ, "Orginal"=>$orginal, "Limit"=>$limit=>NULL);
+			return array("Typ"=>$typ, "Orginal"=>$orginal, "Limit"=>NULL);
 		}
 
 

@@ -7,7 +7,7 @@ class Basic
 	{
 		$this->db = new \Easy\PDOW\PDOW();
 	}
-	public function setDB()
+	public function setDB($db)
 	{
 		$this->db = $db;
 	}
