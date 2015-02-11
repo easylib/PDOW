@@ -5,6 +5,7 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 {
 	protected $_dbName = NULL;
 	protected $_relations = NULL;
+	protected static $namespace = '\Lib\\';
 
 	public function __construct($name, $id = NULL)
 	{
@@ -15,11 +16,39 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 	static public function find($key, $value)
 	{
 		$cn = get_called_class();
+		$cn = self::$namespace.$cn;
 		$db = self::getDB();
 		$tmp = new $cn(); # Fix Problem with not Createt Varieables
 		unset($tmp);      # Fix Problem with not Createt Varieables
 		$sql = 'SELECT `id` FROM `'.self::$_tableNameStatic.'` WHERE `'.$key.'` = ?';
 		$res = $db->query($sql, array($value));
+		if(count($res)==1)
+		{
+			$class =  new $cn($res[0]["id"]);
+			return $class;
+		}
+		elseif(count($res)>1)
+		{
+			$re = array();
+			foreach($res as $r)
+			{
+				$re[] = new $cn($r["id"]);
+			}
+			return $re;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	static public function all()
+	{
+		$db = self::getDB();
+		$cn = get_called_class();
+		$tmp = new $cn();
+		unset($tmp);
+		$sql = 'SELECT `id` FROM `'.self::$_tableNameStatic.'';
+		$res = $db->query($sql);
 		if(count($res)==1)
 		{
 			$class =  new $cn($res[0]["id"]);
@@ -49,18 +78,22 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 		if(isset($this->_relations["intern"][$property]))
 		{
 			$cn = ucfirst($this->_relations["intern"][$property]["REFERENCED_TABLE_NAME"]);
+			$cn = self::$namespace.$cn;
 			if(class_exists($cn))
 			{
 				return $cn::find($this->_relations["intern"][$property]["REFERENCED_COLUMN_NAME"], $this->get($property, true));
 			}
 			else
 			{
+				throw new \Exception("Class ".$cn." not Found", 1);
+				
 				return $this->get($property);
 			}
 		}
 		elseif(isset($this->_relations["extern"][$property]))
 		{
 			$cn = ucfirst($this->_relations["extern"][$property]["TABLE_NAME"]);
+			$cn = self::$namespace.$cn;
 			if(class_exists($cn))
 			{
 				return $cn::find($this->_relations["extern"][$property]["COLUMN_NAME"], $this->get($this->_relations["extern"][$property]["REFERENCED_COLUMN_NAME"], true));

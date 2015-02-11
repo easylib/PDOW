@@ -9,6 +9,7 @@ class Connect
 	private $password = NULL;
 	private $server = NULL;
 	private $database = NULL;
+	private $port = 3306;
 	public function setTyp($typ)
 	{
 		if($typ=="mysql")
@@ -40,6 +41,10 @@ class Connect
 	{
 		$this->password = $password;
 	}
+	public function setPort($port)
+	{
+		$this->port = $port;
+	}
 	public function createConnection()
 	{
 		if($this->typ=="sqlite")
@@ -48,7 +53,7 @@ class Connect
 		}
 		if($this->typ=="mysql")
 		{
-			$this->db = new \PDO("mysql:host=".$this->server.";dbname=".$this->database."", $this->username, $this->password); 
+			$this->db = new \PDO("mysql:host=".$this->server.";port=".$this->port.";dbname=".$this->database."", $this->username, $this->password); 
 			$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		}
 		
