@@ -6,6 +6,7 @@
 ** Add "find" function
 ** Namespace Varieable
 * Start renaming intern Varieables (now beginn with "_")
+* Port in Connection Class
 
 1.2.4 to 1.2.5 (FIX)
 * Disabled Syntax Check by Default und add Function "setCheck" to Enabled

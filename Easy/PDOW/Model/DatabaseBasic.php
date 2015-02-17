@@ -41,7 +41,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			$name = "get_".$param;
 			return $this->$name();
 		}
-		if(isset($this->data[$param]))
+		if(isset($this->data[$param]) || is_null($this->data[$param]))
 		{
 			return $this->data[$param];
 		}
@@ -81,7 +81,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 	}
 	public function __set($property, $value)
 	{
-        if(substr($proberty, 0, 1)!="_")
+        if(substr($property, 0, 1)!="_")
         {
     		return $this->set($property, $value);
         }
