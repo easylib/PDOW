@@ -81,7 +81,14 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 	}
 	public function __set($property, $value)
 	{
-		return $this->set($property, $value);
+        if(substr($proberty, 0, 1)!="_")
+        {
+    		return $this->set($property, $value);
+        }
+        else
+        {
+            throw new \Exception("Param ".$property." can't set");
+        }
 	}
 	public function __get($property)
 	{
