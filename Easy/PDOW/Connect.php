@@ -45,7 +45,7 @@ class Connect
 	{
 		$this->port = $port;
 	}
-	public function createConnection()
+	public function createConnection($utf8 = false)
 	{
 		if($this->typ=="sqlite")
 		{
@@ -56,7 +56,18 @@ class Connect
 			$this->db = new \PDO("mysql:host=".$this->server.";port=".$this->port.";dbname=".$this->database."", $this->username, $this->password); 
 			$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		}
-		
+		if($utf8)
+		{
+			$this->connectionUTF8();
+		}
+	}
+	public function connectionUTF8()
+	{
+		if($utf8)
+		{
+			$this->db->query("SET CHARACTER SET utf8;");
+			$this->db->query("SET NAMES utf8;");
+		}
 	}
 }
 ?>
