@@ -12,11 +12,12 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 		parent::__construct($name, $id);
 		$this->getDatbase();
 		$this->getRelations();
+		self::$_tableNameStatic::$name;
 	}
 	static public function find($key, $value)
 	{
 		$cn = get_called_class();
-		$cn = self::$namespace.$cn;
+		#$cn = self::$namespace.$cn;
 		$db = self::getDB();
 		$tmp = new $cn(); # Fix Problem with not Createt Varieables
 		unset($tmp);      # Fix Problem with not Createt Varieables
