@@ -68,7 +68,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		{
 			$check = true;
 		}
-		if($check == true && isset($this->id))
+		if($check == true))
 		{
 			$this->data[$param] = $value;
 			$sql = 'UPDATE `'.$this->_tableName.'` SET `'.$param.'`=? WHERE id = ?';
