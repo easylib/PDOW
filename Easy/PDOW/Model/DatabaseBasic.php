@@ -68,7 +68,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		{
 			$check = true;
 		}
-		if($check == true))
+		if($check == true)
 		{
 			$this->data[$param] = $value;
 			$sql = 'UPDATE `'.$this->_tableName.'` SET `'.$param.'`=? WHERE id = ?';
@@ -109,7 +109,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			catch(\Exception $e)
 			{
 				throw $e;
-				
+
 				$check = false;
 			}
 		}
@@ -160,7 +160,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		else
 		{
 			throw new \Exception("Check false", 1);
-			
+
 		}
 	}
 	private function getStuctur()
