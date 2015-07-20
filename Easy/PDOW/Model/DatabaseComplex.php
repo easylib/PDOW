@@ -12,7 +12,7 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 		parent::__construct($name, $id);
 		$this->getDatbase();
 		$this->getRelations();
-		self::$_tableNameStatic::$name;
+		self::$_tableNameStatic = $name;
 	}
 	static public function find($key, $value)
 	{
@@ -87,7 +87,7 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 			else
 			{
 				throw new \Exception("Class ".$cn." not Found", 1);
-				
+
 				return $this->get($property);
 			}
 		}

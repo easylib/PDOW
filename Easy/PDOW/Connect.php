@@ -49,11 +49,11 @@ class Connect
 	{
 		if($this->typ=="sqlite")
 		{
-			$this->db = new \PDO('sqlite:'.$this->file); 
+			$this->db = new \PDO('sqlite:'.$this->file);
 		}
 		if($this->typ=="mysql")
 		{
-			$this->db = new \PDO("mysql:host=".$this->server.";port=".$this->port.";dbname=".$this->database."", $this->username, $this->password); 
+			$this->db = new \PDO("mysql:host=".$this->server.";port=".$this->port.";dbname=".$this->database."", $this->username, $this->password);
 			$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		}
 		if($utf8)
@@ -63,11 +63,8 @@ class Connect
 	}
 	public function connectionUTF8()
 	{
-		if($utf8)
-		{
 			$this->db->query("SET CHARACTER SET utf8;");
 			$this->db->query("SET NAMES utf8;");
-		}
 	}
 }
 ?>
