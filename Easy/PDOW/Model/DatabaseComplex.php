@@ -23,12 +23,7 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 		unset($tmp);      # Fix Problem with not Createt Varieables
 		$sql = 'SELECT `id` FROM `'.self::$_tableNameStatic.'` WHERE `'.$key.'` = ?';
 		$res = $db->query($sql, array($value));
-		if(count($res)==1)
-		{
-			$class =  new $cn($res[0]["id"]);
-			return $class;
-		}
-		elseif(count($res)>1)
+		if(count($res)>=1)
 		{
 			$re = array();
 			foreach($res as $r)

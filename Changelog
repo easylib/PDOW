@@ -5,3 +5,5 @@ dev-master
 * connection typ default mysql
 * remove PDOW\connect
 * Add auto transaction
+
+* find alsways return a array
