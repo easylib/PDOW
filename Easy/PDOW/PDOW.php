@@ -4,6 +4,8 @@ class PDOW extends Connect
 {
 	#äprivate $db;
 	static private $dbs = NULL;
+	static private $defaultTransaction = false;
+	private $openTransaction = false;
 	public function __construct()
 	{
 		if(self::$dbs!=NULL)
@@ -16,7 +18,7 @@ class PDOW extends Connect
 	{
 		trigger_error("Deprecated: Function connectConfig() is deprecated.");
 		#var_dump($config->get("host", "DB"));exit();
-		$this->db = new \PDO("mysql:host=".$config->get("host", $group).";dbname=".$config->get("db", $group)."", $config->get("user", $group), $config->get("pass", $group)); 
+		$this->db = new \PDO("mysql:host=".$config->get("host", $group).";dbname=".$config->get("db", $group)."", $config->get("user", $group), $config->get("pass", $group));
 		$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		if($utf8)
 		{
@@ -28,29 +30,40 @@ class PDOW extends Connect
 	{
 		self::$dbs = $this->db;
 	}
-	public function connect($host, $user, $pw, $db, $utf8 = false)
+	public function setDefaultTransaction($value)
 	{
-		trigger_error("Deprecated: Function connect() is deprecated");
-		#var_dump($config->get("host", "DB"));exit();
-		$this->db = new \PDO("mysql:host=".$host.";dbname=".$db."", $user, $pw); 
-		$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-		if($utf8)
+		if(is_bool($value))
 		{
-			$this->db->query("SET CHARACTER SET utf8;");
-			$this->db->query("SET NAMES utf8;");
+			self::$defaultTransaction = $value;
+		}
+		else {
+			throw new \Exception("DefaultTransaction value must be bool");
 		}
 	}
 	public function beginTransaction()
 	{
+		$this->openTransaction = true;
 		return $this->db->beginTransaction();
 	}
 	public function rollBack()
 	{
-		return $this->db->rollBack();
+		$this->openTransaction = false;
+		$r = $this->db->rollBack();
+		if(self::$defaultTransaction===true)
+		{
+			$this->beginTransaction();
+		}
+		return $r;
 	}
 	public function commit()
 	{
-		return $this->db->commit();
+		$this->openTransaction = false;
+		$r = $this->db->commit();
+		if(self::$defaultTransaction===true)
+		{
+			$this->beginTransaction();
+		}
+		return $r;
 	}
 	public function insert($statment, $data = array())
 	{
@@ -58,14 +71,15 @@ class PDOW extends Connect
 		{
 			$data = array($data);
 		}
-		try { 
-		$STH = $this->db->prepare($statment); 
+		try {
+		$STH = $this->db->prepare($statment);
 		$STH->execute($data);
 		$STH->CloseCursor();
 		}
 		catch(PDOException $e) {
-			echo $e;  
-			}  
+			throw $e;
+			#echo $e;
+			}
 	}
 	public function insertID($statment, $data = array())
 	{
@@ -85,7 +99,7 @@ class PDOW extends Connect
 			return $id[0][0];
 		}
 		catch(PDOException $e) {
-			echo "<pre>".$e."</pre>";
+			throw $e;
 		}
 	}
 	public function setFetch($f)
@@ -98,19 +112,19 @@ class PDOW extends Connect
 		{
 			$data = array($data);
 		}
-				try { 
-		$STH = $this->db->prepare($statment); 
+				try {
+		$STH = $this->db->prepare($statment);
 		$STH->execute($data);
 		$re = array();
 		while($row = $STH->fetch($this->fetch)) {
-			$re[] = $row; 
+			$re[] = $row;
 		}
 		$STH->CloseCursor();
 		return $re;
 		}
 		catch(PDOException $e) {
-			echo $e;  
-			}  
+			echo $e;
+			}
 	}
 	public function fetchOne($statment, $data = array())
 	{

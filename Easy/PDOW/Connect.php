@@ -2,12 +2,12 @@
 namespace Easy\PDOW;
 class Connect
 {
-	private $typ = NULL;
+	private $typ = "mysql";
 	private $file = NULL;
 	protected $db = NULL;
-	private $username = NULL;
+	private $username = "root";
 	private $password = NULL;
-	private $server = NULL;
+	private $server = "localhost";
 	private $database = NULL;
 	private $port = 3306;
 	public function setTyp($typ)
@@ -16,14 +16,10 @@ class Connect
 		{
 			$this->typ = "mysql";
 		}
-		if($typ=="sqlite")
-		{
-			$this->typ = "sqlite";
+		else {
+			throw new \Exception("Connection Typ not supportet");
 		}
-	}
-	public function setFile($file)
-	{
-		$this->file = $file;
+		trigger_error("setTyp is depricatet, only mysql is supportet", E_NOTICE);
 	}
 	public function setUsername($user)
 	{
@@ -45,7 +41,7 @@ class Connect
 	{
 		$this->port = $port;
 	}
-	public function createConnection($utf8 = false)
+	public function createConnection($utf8 = true, $createStatic = true)
 	{
 		if($this->typ=="sqlite")
 		{
@@ -59,6 +55,10 @@ class Connect
 		if($utf8)
 		{
 			$this->connectionUTF8();
+		}
+		if($createStatic)
+		{
+			$this->createStatic();
 		}
 	}
 	public function connectionUTF8()

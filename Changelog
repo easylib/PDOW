@@ -1,0 +1,7 @@
+dev-master
+* Automatic Create Static Connection
+* Change UTF8 Connection to default
+* remove sqlite
+* connection typ default mysql
+* remove PDOW\connect
+* Add auto transaction
