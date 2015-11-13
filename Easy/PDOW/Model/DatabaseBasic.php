@@ -9,6 +9,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 	protected $_tableName = NULL; //New $name
 	protected $data = array();
 	protected $structurCheck;
+	protected $regex = [];
 	static protected $name = NULL;
 
 	public function __construct($name, $id = NULL)
@@ -18,6 +19,9 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		if($id!=NULL)
 		{
 			$this->getData($name, $id);
+		}
+		else{
+			$this->data["id"]=NULL;
 		}
 		$this->structurCheck = new \Easy\PDOW\Structur\Check($name, $this->db);
 	}
@@ -41,7 +45,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			$name = "get_".$param;
 			return $this->$name();
 		}
-		if(isset($this->data[$param]) || is_null($this->data[$param]))
+		if(isset($this->data[$param]) || array_key_exists($param, $this->data))
 		{
 			return $this->data[$param];
 		}
@@ -67,6 +71,18 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		else
 		{
 			$check = true;
+		}
+
+		if(isset($this->regex[$param]))
+		{
+			if(!preg_match($this->regex[$param], $value))
+			{
+				throw new \Exception("Regex don`t map");
+			}
+		}
+		if($this->get("id")===NULL)
+		{
+			$check = false;
 		}
 		if($check == true)
 		{
@@ -122,7 +138,9 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			$structur = $this->getStuctur();
 			$sql = "INSERT INTO `".$this->_tableName."` (";
 			$first = true;
-			foreach($structur as $name => $entry)
+			$insertStructur = $structur;
+			unset($insertStructur["id"]);
+			foreach($insertStructur as $name => $entry)
 			{
 				if(!$first)
 				{
@@ -133,7 +151,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			}
 			$sql.= ") VALUES (";
 			$first = true;
-			foreach($structur as $name => $entry)
+			foreach($insertStructur as $name => $entry)
 			{
 				if(!$first)
 				{
@@ -145,7 +163,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			$sql.= ")";
 			#Create Value Array
 			$params = array();
-			foreach($structur as $name => $entry)
+			foreach($insertStructur as $name => $entry)
 			{
 				$data = NULL;
 				if(isset($this->data[$name]))
@@ -156,6 +174,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			}
 			$id = $this->db->insertID($sql, $params);
 			$this->getData($this->_tableName, $id);
+			return true;
 		}
 		else
 		{
@@ -174,5 +193,10 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 
 		}
 		return $re;
+	}
+
+	public function regex($field, $regex)
+	{
+		$this->regex[$field] = $regex;
 	}
 }
