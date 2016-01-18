@@ -139,7 +139,10 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 			$sql = "INSERT INTO `".$this->_tableName."` (";
 			$first = true;
 			$insertStructur = $structur;
-			unset($insertStructur["id"]);
+			if(!isset($this->data["id"]))
+			{
+				unset($insertStructur["id"]);
+			}
 			foreach($insertStructur as $name => $entry)
 			{
 				if(!$first)
