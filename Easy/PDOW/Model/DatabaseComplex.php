@@ -34,7 +34,7 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 		}
 		else
 		{
-			return false;
+			return [];
 		}
 	}
 	static public function all()
