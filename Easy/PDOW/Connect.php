@@ -10,16 +10,9 @@ class Connect
 	private $server = "localhost";
 	private $database = NULL;
 	private $port = 3306;
-	public function setTyp($typ)
+	public function setTyp($typ) #Old To Remove
 	{
-		if($typ=="mysql")
-		{
-			$this->typ = "mysql";
-		}
-		else {
-			throw new \Exception("Connection Typ not supportet");
-		}
-		trigger_error("setTyp is depricatet, only mysql is supportet", E_NOTICE);
+		trigger_error("Remove setTyp!");
 	}
 	public function setUsername($user)
 	{

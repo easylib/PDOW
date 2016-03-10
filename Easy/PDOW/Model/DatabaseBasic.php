@@ -202,4 +202,30 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 	{
 		$this->regex[$field] = $regex;
 	}
+	public function setArray($data)
+	{
+		foreach($data as $key => $value)
+		{
+			$this->$key = $value;
+			#ToDo: Make it in a simple query
+		}
+	}
+	public function getArray($filter = [])
+	{
+		if(count($filter)==0)
+		{
+			return $this->data;
+		}
+		else {
+			$r = array();
+			foreach($filter as $key)
+			{
+				if(isset($this->data[$key]))
+				{
+					$r[$key] = $this->data[$key];
+				}
+			}
+			return $r;
+		}
+	}
 }
