@@ -5,7 +5,7 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 {
 	protected $_dbName = NULL;
 	protected $_relations = NULL;
-	protected static $namespace = '\Lib\\';
+	protected static $namespace = '\PDOW\\';
 
 	public function __construct($name, $id = NULL)
 	{
