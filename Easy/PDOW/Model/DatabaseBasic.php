@@ -51,7 +51,7 @@ class DatabaseBasic extends \Easy\PDOW\Model\Basic
 		}
 		else
 		{
-			throw new \Exception("Param ".$param." not found on Database '".$this->_tableName."'", 1);
+			throw new \Exception("Param '".$param."' not found on Database '".$this->_tableName."'", 1);
 		}
 	}
 	public function set($param, $value)

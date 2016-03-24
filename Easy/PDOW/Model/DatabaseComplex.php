@@ -77,7 +77,7 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 			$cn = self::$namespace.$cn;
 			if(class_exists($cn))
 			{
-				return $cn::find($this->_relations["intern"][$property]["REFERENCED_COLUMN_NAME"], $this->get($property, true));
+				return $cn::find($this->_relations["intern"][$property]["REFERENCED_COLUMN_NAME"], $this->get($property, true))[0];
 			}
 			else
 			{
@@ -92,7 +92,7 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 			$cn = self::$namespace.$cn;
 			if(class_exists($cn))
 			{
-				return $cn::find($this->_relations["extern"][$property]["COLUMN_NAME"], $this->get($this->_relations["extern"][$property]["REFERENCED_COLUMN_NAME"], true));
+				return $cn::find($this->_relations["extern"][$property]["COLUMN_NAME"], $this->get($this->_relations["extern"][$property]["REFERENCED_COLUMN_NAME"], true))[0];
 			}
 			else
 			{
