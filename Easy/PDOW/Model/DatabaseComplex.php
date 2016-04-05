@@ -7,9 +7,9 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 	protected $_relations = NULL;
 	protected static $namespace = '\PDOW\\';
 
-	public function __construct($name, $id = NULL)
+	public function __construct($name, $id = NULL, $data = null)
 	{
-		parent::__construct($name, $id);
+		parent::__construct($name, $id, $data);
 		$this->getDatbase();
 		$this->getRelations();
 		self::$_tableNameStatic = $name;
@@ -37,25 +37,56 @@ class DatabaseComplex extends \Easy\PDOW\Model\DatabaseBasic
 			return [];
 		}
 	}
+	static function findAnd($filter, $returnArray = false)
+	{
+		$cn = get_called_class();
+		#$cn = self::$namespace.$cn;
+		$db = self::getDB();
+		$tmp = new $cn(); # Fix Problem with not Createt Varieables
+		unset($tmp);      # Fix Problem with not Createt Varieables
+		$whereFilter = "";
+		$whereData = [];
+		$first = true;
+		foreach($filter as $key => $value)
+		{
+			if(!$first)
+			{
+				$whereFilter .= " AND ";
+			}
+			$whereFilter .= "`".$key."` = ?";
+			$whereData[] = $value;
+		}
+		$return = "`id`";
+		if($returnArray){
+			$return = "*";
+		}
+		$sql = 'SELECT '.$return.' FROM `'.self::$_tableNameStatic.'` WHERE '.$whereFilter;
+		$res = $db->query($sql, $whereData);
+		if($returnArray == true)
+		{
+			return $res;
+		}
+		$re = array();
+		foreach($res as $r)
+		{
+			$re[] = new $cn($r["id"]);
+		}
+		return $re;
+	}
 	static public function all()
 	{
 		$db = self::getDB();
 		$cn = get_called_class();
 		$tmp = new $cn();
 		unset($tmp);
-		$sql = 'SELECT `id` FROM `'.self::$_tableNameStatic.'';
+		$sql = 'SELECT * FROM `'.self::$_tableNameStatic.'';
 		$res = $db->query($sql);
-		if(count($res)==1)
-		{
-			$class =  new $cn($res[0]["id"]);
-			return $class;
-		}
-		elseif(count($res)>1)
+		if(count($res)>1)
 		{
 			$re = array();
 			foreach($res as $r)
 			{
-				$re[] = new $cn($r["id"]);
+				$re[] = new $cn($r["id"], $r);
 			}
 			return $re;
 		}
